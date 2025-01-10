@@ -1,0 +1,134 @@
+<link rel="stylesheet" href="styles.css">
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadoras</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Calculadoras</h1>
+    <h4>Soma; Divisão; Subtração e Multiplicação</h4>
+
+    <!-- Calculadora Principal -->
+    <section>
+        <h2>Calculadora Principal</h2>
+        <form id="calc-form">
+            <input type="text" id="num1" placeholder="Digite o 1º número (use vírgula)" required>
+            <select id="operation">
+                <option value="add">+</option>
+                <option value="subtract">-</option>
+                <option value="multiply">*</option>
+                <option value="divide">/</option>
+            </select>
+            <input type="text" id="num2" placeholder="Digite o 2º número (use vírgula)" required>
+            <button type="submit">Calcular</button>
+        </form>
+        <div class="result" id="result">O resultado aparecerá aqui.</div>
+    </section>
+
+    <!-- Calculadora de Porcentagem -->
+    <section>
+        <h2>Calculadora de Porcentagem</h2>
+        <form id="percentage-form">
+            <input type="text" id="percentage" placeholder="Digite a porcentagem (%)" required>
+            <input type="text" id="value" placeholder="Digite o valor total" required>
+            <button type="submit">Calcular Porcentagem</button>
+        </form>
+        <div class="result" id="percentage-result">O resultado aparecerá aqui.</div>
+    </section>
+
+    <!-- Calculadora de Conversão de Moedas -->
+    <section>
+        <h2>Calculadora de Conversão de Moedas</h2>
+        <form id="currency-form">
+            <input type="text" id="amount" placeholder="Digite o valor em reais (R$)" required>
+            <select id="currency">
+                <option value="5.10">Dólar (6.30)</option>
+                <option value="5.50">Euro (5.50)</option>
+                <option value="0.05">Bitcoin (0.00005)</option>
+            </select>
+            <button type="submit">Converter</button>
+        </form>
+        <div class="result" id="currency-result">O resultado aparecerá aqui.</div>
+    </section>
+
+    <script>
+        // Calculadora Principal
+        document.getElementById('calc-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let num1 = document.getElementById('num1').value.trim().replace(',', '.');
+            let num2 = document.getElementById('num2').value.trim().replace(',', '.');
+            const operation = document.getElementById('operation').value;
+            const resultDiv = document.getElementById('result');
+            const n1 = parseFloat(num1);
+            const n2 = parseFloat(num2);
+
+            if (isNaN(n1) || isNaN(n2)) {
+                resultDiv.textContent = 'Por favor, insira números válidos.';
+                resultDiv.style.color = 'red';
+                return;
+            }
+
+            let result;
+            switch (operation) {
+                case 'add': result = n1 + n2; break;
+                case 'subtract': result = n1 - n2; break;
+                case 'multiply': result = n1 * n2; break;
+                case 'divide':
+                    if (n2 === 0) {
+                        resultDiv.textContent = 'Divisão por zero não é permitida.';
+                        resultDiv.style.color = 'red';
+                        return;
+                    }
+                    result = n1 / n2; break;
+                default: result = 'Operação inválida';
+            }
+            resultDiv.textContent = `Resultado: ${result.toString().replace('.', ',')}`;
+            resultDiv.style.color = 'white';
+        });
+
+        // Calculadora de Porcentagem
+        document.getElementById('percentage-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let percentage = document.getElementById('percentage').value.trim().replace(',', '.');
+            let value = document.getElementById('value').value.trim().replace(',', '.');
+            const resultDiv = document.getElementById('percentage-result');
+            const percent = parseFloat(percentage);
+            const totalValue = parseFloat(value);
+
+            if (isNaN(percent) || isNaN(totalValue)) {
+                resultDiv.textContent = 'Por favor, insira números válidos.';
+                resultDiv.style.color = 'red';
+                return;
+            }
+
+            const result = (percent / 100) * totalValue;
+            resultDiv.textContent = `Resultado: ${result.toString().replace('.', ',')}`;
+            resultDiv.style.color = 'white';
+        });
+
+        // Calculadora de Conversão de Moedas
+        document.getElementById('currency-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            let amount = document.getElementById('amount').value.trim().replace(',', '.');
+            const rate = parseFloat(document.getElementById('currency').value);
+            const resultDiv = document.getElementById('currency-result');
+            const value = parseFloat(amount);
+
+            if (isNaN(value)) {
+                resultDiv.textContent = 'Por favor, insira um valor válido.';
+                resultDiv.style.color = 'red';
+                return;
+            }
+
+            const result = value / rate;
+            resultDiv.textContent = `Resultado: ${result.toFixed(2).replace('.', ',')}`;
+            resultDiv.style.color = 'white';
+        });
+    </script>
+</body>
+</html>
+
